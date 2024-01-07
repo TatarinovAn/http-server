@@ -31,6 +31,11 @@ public class Server {
 
     public void addHandler(String method, String path, Handler handler) {
         Map<String, Handler> pathHandlerMap = new ConcurrentHashMap<>();
+        if (path.contains("?")) {
+            path = path.substring(0, path.indexOf("?"));
+            System.out.println(path);
+
+        }
         if (handlers.containsKey(method)) {
             pathHandlerMap = handlers.get(method);
         }
