@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 public class Main {
     private static final List<String> validPaths = List.of("/index.html", "/spring.svg", "/spring.png", "/resources.html",
@@ -23,6 +24,13 @@ public class Main {
                     Response.responseOk(filePath, content, responseStream);
                     System.out.println(request.toString());
                     System.out.println(request.getRequestLine().toString());
+                    for(Map.Entry<String, String> entry: request.getRequestLine().getQueryParams().entrySet()) {
+                        // get key
+                        String key = entry.getKey();
+                        // get value
+                        String value = entry.getValue();
+                        System.out.println("Ключ " + key  + " Значение " + value);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -3,20 +3,26 @@ package ru.netology;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
+
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RequestLine {
     private final String method;
     private final String path;
     private final String version;
+    private List<NameValuePair> queryList;
     private String query;
+    private URLEncodedUtils URLEncorydedUtils;
+
 
     public RequestLine(String method, String path, String version) {
         this.method = method;
         if (path.contains("?")) {
             this.query = path.substring(path.indexOf("?") + 1, path.length() - 1);
-
+            getQueryParam(query);
             path = path.substring(0, path.indexOf("?"));
 
             this.path = path;
@@ -39,17 +45,21 @@ public class RequestLine {
         return version;
     }
 
-    public List<NameValuePair> getQueryParam(String name) {
-        return URLEncodedUtils.parse(name, StandardCharsets.UTF_8);
+    private void getQueryParam(String name) {
+
+        this.queryList = URLEncorydedUtils.parse(name, StandardCharsets.UTF_8);
     }
 
-    public void getQueryParams() {
+    public Map<String, String> getQueryParams() {
         if (query != null) {
-
-            for (final NameValuePair param : getQueryParam(query)) {
-                System.out.println(param.getName() + " : " + param.getValue());
+            Map<String, String> listParam = new HashMap<>();
+            for (NameValuePair param : queryList) {
+                listParam.put(param.getName(), param.getValue());
             }
+
+            return listParam;
         }
+        return null;
     }
 
 
